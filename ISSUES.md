@@ -10,16 +10,18 @@ Implement the core video playback engine capable of playing a single HD channel 
 - Auto format detection and conversion
 - GPU-accelerated decoding (NVIDIA/AMD)
 - Seamless back-to-back clip playback (no black frames)
+
 **Acceptance Criteria:**
-- [ ] Plays a 30-clip playlist without interruption for 1 hour
-- [ ] Supports 1080i/50, 1080p/25, 1080p/30 output
-- [ ] Clip transition < 1 frame gap
-- [ ] CPU usage < 40% on target hardware
+  - [ ] Plays a 30-clip playlist without interruption for 1 hour
+  - [ ] Supports 1080i/50, 1080p/25, 1080p/30 output
+  - [ ] Clip transition < 1 frame gap
+  - [ ] CPU usage < 40% on target hardware
 
 ---
 
 ### [ISSUE-002] Basic Playlist Scheduler
 **Labels:** `engine` `phase-1` `high-priority`
+
 **Description:**
 Build a file-based scheduler that manages a playlist and controls playback engine timing.
 - Import playlist from XML/CSV
@@ -27,6 +29,7 @@ Build a file-based scheduler that manages a playlist and controls playback engin
 - Automatic gap filling with "filler" content
 - Overlap resolution (trim/skip logic)
 - Save/load daily schedules
+
 **Acceptance Criteria:**
 - [ ] Load a 24-hour schedule from XML
 - [ ] Auto-resolve time gaps and overlaps
@@ -37,6 +40,7 @@ Build a file-based scheduler that manages a playlist and controls playback engin
 
 ### [ISSUE-003] FFmpeg-based Streaming Output
 **Labels:** `engine` `phase-1` `high-priority`
+
 **Description:**
 Output the playout engine video stream to multiple IP destinations simultaneously.
 - RTMP output (YouTube, Facebook, Wowza)
@@ -44,6 +48,7 @@ Output the playout engine video stream to multiple IP destinations simultaneousl
 - HLS output (web player compatible)
 - UDP multicast output
 - Configurable bitrate, resolution, codec (H.264/H.265)
+
 **Acceptance Criteria:**
 - [ ] Simultaneous RTMP + SRT output
 - [ ] HLS with 2-second segments
@@ -54,6 +59,7 @@ Output the playout engine video stream to multiple IP destinations simultaneousl
 
 ### [ISSUE-004] REST API Skeleton
 **Labels:** `api` `phase-1`
+
 **Description:**
 Create the Node.js/TypeScript REST API that connects the web panel to the playout engine.
 - Channel CRUD operations
@@ -61,6 +67,7 @@ Create the Node.js/TypeScript REST API that connects the web panel to the playou
 - WebSocket for real-time status
 - JWT authentication
 - API documentation (Swagger/OpenAPI)
+
 **Endpoints:**
 - GET/POST /channels
 - GET/PUT/DELETE /channels/:id/playlist
@@ -71,6 +78,7 @@ Create the Node.js/TypeScript REST API that connects the web panel to the playou
 
 ### [ISSUE-005] Web Panel — Channel Dashboard (MVP)
 **Labels:** `web` `phase-1`
+
 **Description:**
 Build the first version of the web management panel with a channel monitoring dashboard.
 - Live channel status (playing/stopped/error)
@@ -78,14 +86,17 @@ Build the first version of the web management panel with a channel monitoring da
 - Basic playlist view (current day)
 - Play/Stop/Skip controls
 - Real-time clock display
+
 **Tech:** React + TypeScript + Tailwind CSS
 
 ---
 
 ### [ISSUE-006] Database Schema Design
 **Labels:** `api` `phase-1` `architecture`
+
 **Description:**
 Design and implement the PostgreSQL database schema for the entire system.
+
 **Tables needed:**
 - channels (id, name, config, status)
 - playlists (id, channel_id, date, items[])
@@ -100,6 +111,7 @@ Design and implement the PostgreSQL database schema for the entire system.
 
 ### [ISSUE-007] Multi-Channel Support
 **Labels:** `engine` `phase-2`
+
 **Description:**
 Extend the engine to support N simultaneous channels from a single server.
 - Independent playout engine per channel
@@ -111,6 +123,7 @@ Extend the engine to support N simultaneous channels from a single server.
 
 ### [ISSUE-008] SDI Output via Blackmagic DeckLink
 **Labels:** `engine` `phase-2` `hardware`
+
 **Description:**
 Integrate Blackmagic DeckLink SDK for professional SDI video output.
 - Support DeckLink 4K Extreme, Studio, Mini Monitor cards
@@ -118,26 +131,31 @@ Integrate Blackmagic DeckLink SDK for professional SDI video output.
 - Embedded audio (16 channels)
 - VANC data passthrough
 - Hardware reference lock (genlock)
+
 **Reference:** Blackmagic DeckLink SDK documentation
 
 ---
 
 ### [ISSUE-009] NDI Input and Output
 **Labels:** `engine` `phase-2`
+
 **Description:**
 Add NDI (Network Device Interface) support for IP-based studio workflows.
 - NDI source discovery (mDNS)
 - NDI input as live source in playlist
 - NDI output alongside other outputs
 - NDI High Bandwidth + NDI HX support
+
 **Reference:** NDI SDK by NewTek/Vizrt
 
 ---
 
 ### [ISSUE-010] Real-Time CG Overlay Engine
 **Labels:** `engine` `phase-2` `graphics`
+
 **Description:**
 Build a compositing engine for real-time graphics overlays.
+
 **Features:**
 - Static/animated logo (with transparency)
 - Scrolling ticker (horizontal text crawl)
@@ -146,12 +164,14 @@ Build a compositing engine for real-time graphics overlays.
 - "Now Playing" lower-third graphic
 - Schedule-driven: show/hide at specific times
 - Multiple logo presets with fade transitions
+
 **Tech:** OpenGL / Vulkan / DirectX compositing
 
 ---
 
 ### [ISSUE-011] Advanced Scheduler with EPG
 **Labels:** `engine` `api` `phase-2`
+
 **Description:**
 Upgrade the scheduler to professional broadcast-grade capabilities.
 - Fixed-time events (hard start)
@@ -166,6 +186,7 @@ Upgrade the scheduler to professional broadcast-grade capabilities.
 
 ### [ISSUE-012] Audio Loudness Normalization (EBU R128)
 **Labels:** `engine` `phase-2` `audio`
+
 **Description:**
 Implement real-time audio loudness control compliant with EBU R128 / ATSC A/85 standards.
 - Real-time loudness measurement (LUFS)
@@ -178,6 +199,7 @@ Implement real-time audio loudness control compliant with EBU R128 / ATSC A/85 s
 
 ### [ISSUE-013] Closed Captions & Subtitles
 **Labels:** `engine` `phase-2`
+
 **Description:**
 Support industry-standard caption and subtitle formats.
 - CEA-608 / CEA-708 closed captions
@@ -191,6 +213,7 @@ Support industry-standard caption and subtitle formats.
 
 ### [ISSUE-014] SCTE-35 Ad Insertion Markers
 **Labels:** `engine` `phase-2` `advertising`
+
 **Description:**
 Implement SCTE-35 cue messages for ad insertion in broadcast/streaming workflows.
 - SCTE-35 splice_insert and splice_null
@@ -203,6 +226,7 @@ Implement SCTE-35 cue messages for ad insertion in broadcast/streaming workflows
 
 ### [ISSUE-015] As-Run Log & Reporting
 **Labels:** `api` `web` `phase-2`
+
 **Description:**
 Comprehensive as-run logging and reporting system.
 - Log every played event (start time, end time, clip ID, duration, status)
@@ -215,6 +239,7 @@ Comprehensive as-run logging and reporting system.
 
 ### [ISSUE-016] Web Panel — Schedule Manager
 **Labels:** `web` `phase-2`
+
 **Description:**
 Full-featured schedule management UI in the web panel.
 - Week/day view calendar
@@ -228,6 +253,7 @@ Full-featured schedule management UI in the web panel.
 
 ### [ISSUE-017] Web Panel — Media Asset Manager
 **Labels:** `web` `phase-2`
+
 **Description:**
 Media library browser in the web panel.
 - Browse and search media files
@@ -241,6 +267,7 @@ Media library browser in the web panel.
 
 ### [ISSUE-018] Real-Time Monitoring & Alerts
 **Labels:** `api` `web` `phase-2`
+
 **Description:**
 System monitoring dashboard and alert system.
 - Live multiviewer (video thumbnail per channel in web panel)
@@ -257,6 +284,7 @@ System monitoring dashboard and alert system.
 
 ### [ISSUE-019] 1+1 Redundancy with Auto-Failover
 **Labels:** `engine` `api` `phase-3` `critical`
+
 **Description:**
 Implement professional redundancy for 24/7 broadcast reliability.
 - Primary + backup engine synchronization
@@ -270,18 +298,21 @@ Implement professional redundancy for 24/7 broadcast reliability.
 
 ### [ISSUE-020] SMPTE ST 2110 IP Workflow
 **Labels:** `engine` `phase-3` `networking`
+
 **Description:**
 Full SMPTE ST 2110 support for professional IP studio environments.
 - ST 2110-20 (uncompressed video)
 - ST 2110-30 (audio)
 - NMOS IS-04/IS-05 discovery and control
 - PTP (IEEE 1588) synchronization
+
 **Hardware:** Requires compatible IP video cards (Blackmagic IP)
 
 ---
 
 ### [ISSUE-021] 4K UHD Playout
 **Labels:** `engine` `phase-3`
+
 **Description:**
 Full 4K/UHD playout capability.
 - 3840×2160 @ 25/29.97/50/59.94 fps
@@ -294,6 +325,7 @@ Full 4K/UHD playout capability.
 
 ### [ISSUE-022] Traffic System Integration
 **Labels:** `api` `phase-3` `integration`
+
 **Description:**
 Two-way integration with broadcast traffic/scheduling systems.
 - Import schedule from external traffic systems (XML, AS-11, MXF)
@@ -306,14 +338,17 @@ Two-way integration with broadcast traffic/scheduling systems.
 
 ### [ISSUE-023] Multi-User RBAC (Role-Based Access Control)
 **Labels:** `api` `web` `phase-3` `security`
+
 **Description:**
 Enterprise-grade user management and permission system.
+
 **Roles:**
 - Admin: full system access
 - Operator: playlist control, no system config
 - Viewer: read-only monitoring
 - Scheduler: schedule editing only
 - API: external system integration
+
 **Features:**
 - SSO/LDAP integration option
 - Audit log (who did what, when)
@@ -323,6 +358,7 @@ Enterprise-grade user management and permission system.
 
 ### [ISSUE-024] DVE — Digital Video Effects
 **Labels:** `engine` `phase-3` `graphics`
+
 **Description:**
 Picture-in-picture and DVE capabilities.
 - Picture-in-Picture (PiP) with position/size control
@@ -336,6 +372,7 @@ Picture-in-picture and DVE capabilities.
 
 ### [ISSUE-025] AI Smart Scheduler
 **Labels:** `ai` `phase-4`
+
 **Description:**
 ML-based intelligent scheduling assistant.
 - Analyze viewing patterns to optimize content placement
@@ -343,12 +380,14 @@ ML-based intelligent scheduling assistant.
 - Auto-fill gaps with contextually relevant content
 - Rule-based + AI hybrid mode
 - Integration with audience analytics data
+
 **Tech:** Python, scikit-learn or LLM API
 
 ---
 
 ### [ISSUE-026] AI-Powered Auto-QC
 **Labels:** `ai` `phase-4`
+
 **Description:**
 Automated quality control using machine learning.
 - Detect black frames, freeze, audio silence before air
@@ -356,12 +395,14 @@ Automated quality control using machine learning.
 - Aspect ratio validation
 - Missing subtitle detection
 - Pre-air validation report
+
 **Tech:** Python, OpenCV, FFmpeg
 
 ---
 
 ### [ISSUE-027] AI Auto-Captioning (Persian + Multilingual)
 **Labels:** `ai` `phase-4` `persian`
+
 **Description:**
 Automatic subtitle generation using speech-to-text AI.
 - Persian (Farsi) speech recognition
@@ -369,12 +410,14 @@ Automatic subtitle generation using speech-to-text AI.
 - Real-time and offline captioning modes
 - Integration with playout for live caption overlay
 - Persian text RTL rendering in CG engine
+
 **Tech:** Whisper (OpenAI) + Persian fine-tuning
 
 ---
 
 ### [ISSUE-028] FAST Channel Support
 **Labels:** `engine` `api` `phase-4`
+
 **Description:**
 Free Ad-Supported Streaming Television (FAST) channel capabilities.
 - Ad-supported linear channel output
@@ -387,6 +430,7 @@ Free Ad-Supported Streaming Television (FAST) channel capabilities.
 
 ### [ISSUE-029] Cloud & Hybrid Deployment
 **Labels:** `devops` `phase-4`
+
 **Description:**
 Support cloud and hybrid deployment models.
 - Docker containerization of all services
@@ -399,6 +443,7 @@ Support cloud and hybrid deployment models.
 
 ### [ISSUE-030] Social Media Simulcast
 **Labels:** `engine` `phase-4`
+
 **Description:**
 Direct publishing to social platforms alongside broadcast.
 - YouTube Live output
@@ -413,6 +458,7 @@ Direct publishing to social platforms alongside broadcast.
 
 ### [ISSUE-031] Development Environment Setup (Docker Compose)
 **Labels:** `devops` `phase-1`
+
 **Description:**
 Create a Docker Compose setup for local development.
 - PostgreSQL container
@@ -425,6 +471,7 @@ Create a Docker Compose setup for local development.
 
 ### [ISSUE-032] CI/CD Pipeline
 **Labels:** `devops` `phase-2`
+
 **Description:**
 Automated testing and deployment pipeline.
 - GitHub Actions workflow
@@ -437,6 +484,7 @@ Automated testing and deployment pipeline.
 
 ### [ISSUE-033] API Documentation
 **Labels:** `api` `docs` `phase-2`
+
 **Description:**
 Comprehensive API documentation.
 - Swagger/OpenAPI spec
