@@ -1,0 +1,8 @@
+[package]
+name = "openplayout-core-engine"
+version = "0.1.0"
+edition = "2021"
+description = "Single-channel HD playout engine with FFmpeg-backed decode/output and basic web control"
+
+[dependencies]
+

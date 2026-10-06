@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenPlayout Channel Control</title>
+  <style>
+    :root { color-scheme: dark; font-family: Segoe UI, Arial, sans-serif; background: #111417; color: #eef3f8; }
+    body { margin: 0; }
+    main { max-width: 980px; margin: 0 auto; padding: 28px; }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid #2d343b; padding-bottom: 18px; }
+    h1 { font-size: 24px; margin: 0; letter-spacing: 0; }
+    .status { font-size: 18px; padding: 8px 12px; border: 1px solid #3b4650; background: #1b2229; border-radius: 6px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin: 22px 0; }
+    .metric { border: 1px solid #2d343b; border-radius: 6px; padding: 14px; background: #171d22; }
+    .metric span { display: block; color: #9dafbd; font-size: 12px; text-transform: uppercase; margin-bottom: 8px; }
+    .metric strong { font-size: 20px; }
+    .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+    button { border: 1px solid #40505d; color: #eef3f8; background: #26323b; border-radius: 6px; padding: 10px 14px; cursor: pointer; }
+    button:hover { background: #30414d; }
+    button.primary { background: #116149; border-color: #218765; }
+    button.danger { background: #6b2630; border-color: #9b3d49; }
+    table { width: 100%; border-collapse: collapse; border: 1px solid #2d343b; }
+    th, td { padding: 10px; border-bottom: 1px solid #2d343b; text-align: left; font-size: 14px; }
+    th { color: #9dafbd; background: #171d22; }
+    code { color: #c8e39d; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>OpenPlayout Single Channel</h1>
+      <div id="state" class="status">connecting</div>
+    </header>
+    <section class="grid">
+      <div class="metric"><span>Standard</span><strong id="standard">-</strong></div>
+      <div class="metric"><span>Frame Duration</span><strong id="frame">-</strong></div>
+      <div class="metric"><span>Output</span><strong id="output">-</strong></div>
+      <div class="metric"><span>Uptime</span><strong id="uptime">-</strong></div>
+    </section>
+    <section class="controls">
+      <button class="primary" onclick="post('/api/play')">Play</button>
+      <button onclick="post('/api/restart')">Restart</button>
+      <button class="danger" onclick="post('/api/stop')">Stop</button>
+    </section>
+    <table>
+      <thead><tr><th>Clip</th><th>Path</th><th>In</th><th>Duration</th></tr></thead>
+      <tbody id="playlist"></tbody>
+    </table>
+  </main>
+  <script>
+    async function post(path) {
+      await fetch(path, { method: 'POST' });
+      await refresh();
+    }
+    function fmt(ms) {
+      const seconds = Math.floor(ms / 1000);
+      const h = Math.floor(seconds / 3600);
+      const m = Math.floor((seconds % 3600) / 60);
+      const s = seconds % 60;
+      return `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+    async function refresh() {
+      const status = await fetch('/api/status').then(r => r.json());
+      document.getElementById('state').textContent = status.state;
+      document.getElementById('standard').textContent = status.standard;
+      document.getElementById('frame').textContent = `${status.frameDurationMs} ms`;
+      document.getElementById('output').textContent = status.output;
+      document.getElementById('uptime').textContent = fmt(status.uptimeMs);
+      const playlist = await fetch('/api/playlist').then(r => r.json());
+      document.getElementById('playlist').innerHTML = playlist.map(clip =>
+        `<tr><td>${clip.id}</td><td><code>${clip.path}</code></td><td>${clip.inPointMs} ms</td><td>${clip.durationMs ?? 'full clip'}</td></tr>`
+      ).join('');
+    }
+    refresh();
+    setInterval(refresh, 1000);
+  </script>
+</body>
+</html>
+
