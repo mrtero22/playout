@@ -1,6 +1,6 @@
 # Playout Broadcast App: Milestones
 
-Timeline is relative to project start (W1). Total plan: about 36 weeks to General Availability.
+Timeline is relative to project start (W1). Total plan: about 42 weeks to General Availability.
 
 ## 1. Architecture Decisions
 
@@ -105,7 +105,7 @@ Timeline is relative to project start (W1). Total plan: about 36 weeks to Genera
 
 **Deliverables**
 - WebRTC preview of program and preview output
-- Real time state (on air item, countdown, next up, alarms) over WebSocket
+- [Real time state (on air item, countdown, next up, alarms) over WebSocket](./WEBSOCKET_DOCKER_NESTJS_CADDY.md)
 - Responsive layout for desktop, tablet and phone
 - Live alarms for black frame, silence, frozen frame, failover events
 
@@ -151,6 +151,29 @@ Timeline is relative to project start (W1). Total plan: about 36 weeks to Genera
 - Pilot week with no breaking defects
 - Sign off from operations team
 
+### M9: Live Stream Support (W37 to W42)
+**Goal:** Use the playout app to run live streams end to end: take live feeds in, mix them with playlist content and graphics, and deliver them reliably to viewers and streaming platforms.
+
+**Deliverables**
+- Live ingest gateway for SRT, RTMP, WebRTC (WHIP) and NDI with stream keys, authentication, and per source health
+- Live segments in the playlist and rundown, with fast switching between live and playlist content and a fallback slate
+- Backup feed support with automatic switch when the main feed drops
+- Standby engine receiving the same live feeds, so failover keeps live segments on air
+- Live event scheduling with countdown and a pre-roll test before going live
+- Multi destination output (RTMP and SRT) to platforms such as YouTube, Facebook and Twitch, with per destination health and retry
+- Viewer delivery with HLS and low latency HLS, an adaptive bitrate ladder, and CDN origin support
+- Live graphics and live captions on live segments
+- Live recording with a DVR window and instant clips for replay
+- Multi source monitor wall in the Web Panel, usable on tablet and phone
+- AI assistant help during live events: source problem alerts, suggestions, and event summaries
+
+**Exit criteria**
+- 24 hour live event soak test with random source drops runs with no program interruption
+- Backup feed takes over in under 2 seconds after the main feed is lost
+- One program feed delivered to at least 3 destinations, and a failing destination never affects the program or the other destinations
+- Glass to glass latency meets the target set in M0 for both standard and low latency delivery
+- Resource targets from M0 still met with live ingest and multi destination output active
+
 ## 4. Milestone Summary
 
 | Milestone | Target | Main outcome |
@@ -164,6 +187,7 @@ Timeline is relative to project start (W1). Total plan: about 36 weeks to Genera
 | M6 AI Assistant | W31 | Natural language operations |
 | M7 Performance and Hardening | W34 | Proven stability |
 | M8 Pilot and GA | W36 | Production release |
+| M9 Live Stream Support | W42 | Live events with multi destination delivery |
 
 ## 5. Risks
 
@@ -174,3 +198,7 @@ Timeline is relative to project start (W1). Total plan: about 36 weeks to Genera
 | Failover desync between primary and standby | Jump or repeat at switch | Shared timecode, lockstep tests, chaos testing |
 | AI assistant makes a wrong on air change | Wrong content on air | Confirmation step, role limits, audit log |
 | Hardware differences across sites | Inconsistent performance | Sizing baseline in M0, hardware compatibility list |
+| Unstable live sources (packet loss, jitter, drops) | Glitches or gaps on air | Jitter buffers, backup feed auto switch, fallback slate |
+| One failing streaming destination slows the program | Impact on all viewers | Per destination isolation, independent retry, no shared blocking |
+| Extra encodes for adaptive bitrate raise resource use | Higher server cost | Hardware encoding, shared decode, encode only the needed ladder |
+| Platform ingest rules change (YouTube, Facebook, Twitch) | Broken destinations | Destination test tool, configurable presets, regular checks |

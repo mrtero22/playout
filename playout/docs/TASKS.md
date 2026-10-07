@@ -62,6 +62,7 @@ Work is always picked in this order: Urgent, then Highest, then Very High, then 
 | T2.9 | Audit log of all operator actions | Very High |
 | T2.10 | API rate limits, input validation, security headers | Very High |
 | T2.11 | M2 exit review and stabilization | Highest |
+| T2.12 | Set up Caddy as reverse proxy with automatic HTTPS, WebSocket support, and a load balanced API upstream | Very High |
 
 ### M3: Graphics (W16 to W20)
 
@@ -105,6 +106,7 @@ Work is always picked in this order: Urgent, then Highest, then Very High, then 
 | T5.6 | Alarm center: black frame, silence, frozen frame, failover events | Very High |
 | T5.7 | Reconnect and state resync after network loss | Very High |
 | T5.8 | M5 exit review and stabilization | Highest |
+| T5.9 | Tune Caddy for live connections (`stream_close_delay`, idle timeouts) and test that reloads do not drop operator sessions | Very High |
 
 ### M6: AI Assistant (W29 to W31)
 
@@ -143,6 +145,35 @@ Work is always picked in this order: Urgent, then Highest, then Very High, then 
 | T8.4 | Support process and defect intake flow | Very High |
 | T8.5 | Release candidate, release notes, GA release | Highest |
 | T8.6 | GA exit review and stabilization | Highest |
+
+### M9: Live Stream Support (W37 to W42)
+
+| ID | Task | Priority |
+|:-|:-|:-|
+| T9.1 | Live ingest gateway for SRT, RTMP, WebRTC (WHIP) and NDI with stream keys and authentication | Urgent |
+| T9.2 | Ingest jitter buffer and automatic reconnect handling | Urgent |
+| T9.3 | Live source health monitoring (bitrate, packet loss, frame rate) | Highest |
+| T9.4 | Backup feed with automatic switch when the main feed drops | Urgent |
+| T9.5 | Standby engine receives the same live feeds so failover keeps live segments on air | Urgent |
+| T9.6 | Live segment type in the playlist model and rundown | Highest |
+| T9.7 | Fast switching between live and playlist content with fallback slate | Urgent |
+| T9.8 | Live event scheduling with countdown and pre-roll test | Very High |
+| T9.9 | Multi destination restream engine (RTMP and SRT) with per destination retry | Urgent |
+| T9.10 | Destination isolation so one failing destination never affects the program or other destinations | Urgent |
+| T9.11 | Destination manager in the Web Panel (add, test, start, stop, health per destination) | Highest |
+| T9.12 | HLS and low latency HLS packager | Highest |
+| T9.13 | Adaptive bitrate ladder with hardware encoding | Highest |
+| T9.14 | Shared decode feeding all outputs to keep resource use minimal | Highest |
+| T9.15 | CDN origin integration and token protected playback | Very High |
+| T9.16 | Live graphics on live segments (reuse the M3 renderer) | Highest |
+| T9.17 | Live recording with a DVR window | Very High |
+| T9.18 | Multi source monitor wall in the Web Panel, usable on tablet and phone | Very High |
+| T9.19 | Glass to glass latency measurement and tuning | Very High |
+| T9.20 | Live captions on live segments with Whisper | High |
+| T9.21 | Instant clips and replay from live recording | High |
+| T9.22 | AI assistant live help: source problem alerts, suggestions, event summaries | High |
+| T9.23 | 24 hour live event soak test with random source drops | Urgent |
+| T9.24 | M9 exit review and stabilization | Highest |
 
 ## 3. Ongoing Tasks (All Milestones)
 
